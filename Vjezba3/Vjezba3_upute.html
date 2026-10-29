@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vježba 3: ubrzanje, podjela i granularnost</title>
+<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>Vježba 3: izmjereno ubrzanje, podjela posla i granularnost</h1>
+  <p class="lead">Paralelno programiranje, tjedan 3. Nakon vježbe znate usporediti izmjereno ubrzanje s Amdahlovim zakonom, iz mjerenja procijeniti slijedni udio programa i prepoznati dvije zamke: lošu podjelu posla i premale zadatke.</p>
+
+  <h2>Priprema</h2>
+  <div class="card">
+    <ul class="tight">
+      <li>Visual Studio 2026 ili JetBrains Rider: otvorite <code>Vjezba3/Vjezba3.sln</code>. Visual Studio Code (uz proširenje C# Dev Kit): File &gt; Open Folder, mapa <code>Vjezba3</code>, konfiguracija »Vježba 3: zadatak N«. Naredbeni redak: u mapi zadatka pokrenite <code>dotnet run</code> (npr. <code>cd Zadatak1_Amdahl</code> pa <code>dotnet run</code>).</li>
+      <li>Projekt cilja <b>.NET 10</b> (LTS). Ako imate samo Visual Studio 2022, u datoteci <code>.csproj</code> svakog zadatka (i u <code>.vscode/launch.json</code>) promijenite <code>net10.0</code> u <code>net8.0</code>; zadaci rade jednako.</li>
+      <li>Svaki zadatak je zaseban projekt (mapa <code>ZadatakN_*</code> s datotekom <code>ZadatakN_*.cs</code>) i pokreće se samostalno: u Visual Studiju desni klik na projekt &gt; Set as Startup Project, u Rideru odaberite projekt u popisu konfiguracija.</li>
+      <li>U svim zadacima mjerite vrijeme, pa ih pokrećite u <b>Release</b> konfiguraciji: u Visual Studiju i Rideru odaberite konfiguraciju Release, u VS Codeu konfiguraciju pokretanja »(Release)«, a u naredbenom retku <code>dotnet run -c Release</code>. Zatvorite druge zahtjevne programe dok mjerite.</li>
+      <li>U datoteci <code>.csproj</code> svakog zadatka isključeno je višerazinsko prevođenje (<code>TieredCompilation</code>): svaka metoda se odmah prevodi optimizirano, pa prva mjerenja nisu sporija od kasnijih.</li>
+      <li>Prije vježbe pogledajte prezentaciju za vježbu 3 i predavanje 3 (Amdahlov zakon, Karp–Flattova metrika, primjer s pet naredbi, oznake na slajdu 14). Na vježbi slijedni udio ugrađen u program pišemo f, a broj taskova k; na predavanju isto pišemo 1 − P i N. Slijedni udio izračunan iz mjerenja je e.</li>
+    </ul>
+  </div>
+
+  <h2>Zadaci</h2>
+  <div class="card">
+    <h3>Zadatak 1: izmjereno ubrzanje i Amdahlov zakon <span class="pill">Zadatak1_Amdahl.cs</span></h3>
+    <p class="muted" style="margin:6px 0">Zadano: program koji zbraja brojeve od 1 do N = 2·10<sup>9</sup>. Prvih f · N brojeva mora se zbrojiti slijedno, a ostatak se smije dijeliti. Metoda <code>Izmjeri</code> vraća najkraće od tri mjerenja.</p>
+    <b>Što trebate napraviti:</b>
+    <ol class="tight">
+      <li>Napišite metodu <code>static long Program(double f, int k)</code> koja slijedni dio izvodi na jednoj niti, a zatim ostatak dijeli na k taskova. Zbroj mora uvijek biti N(N + 1) / 2.</li>
+      <li>Za f = 0; 0,1 i 0,5 te k = 1, 2, 4, 8 i 16 izmjerite vrijeme i izračunajte ubrzanje S = T(1) / T(k), gdje je T(1) vrijeme za k = 1.</li>
+      <li>Uz svaki S ispišite Amdahlovo predviđanje 1 / (f + (1 − f) / k) i Karp–Flattovu metriku e = (1/S − 1/k) / (1 − 1/k) (za k &gt; 1).</li>
+      <li>Ostaje li e blizu f kad k raste? Za koji f i koji k se izmjereno najviše razlikuje od predviđenog i zašto?</li>
+    </ol>
+    <div class="note">e je slijedni udio procijenjen iz mjerenja. Ako je izmjereni S malo veći od k, e je malo negativan: to je šum mjerenja (vremena se između pokretanja mijenjaju za nekoliko posto).</div>
+    <div class="out"><b>Primjer ispisa (Release, procesor sa 6 jezgri i 12 logičkih)</b><pre>Jezgri (logičkih): 12
+
+f = 0,0
+k     vrijeme      S   Amdahl      e   zbroj
+1      577 ms   1,00     1,00      –   ispravan
+2      273 ms   2,11     2,00  -0,054   ispravan
+4      146 ms   3,95     4,00  0,004   ispravan
+8      119 ms   4,85     8,00  0,093   ispravan
+16     116 ms   4,97    16,00  0,148   ispravan
+
+f = 0,1
+k     vrijeme      S   Amdahl      e   zbroj
+1      533 ms   1,00     1,00      –   ispravan
+2      299 ms   1,78     1,82  0,122   ispravan
+4      185 ms   2,88     3,08  0,129   ispravan
+8      155 ms   3,44     4,71  0,189   ispravan
+16     170 ms   3,14     6,40  0,274   ispravan
+
+f = 0,5
+k     vrijeme      S   Amdahl      e   zbroj
+1      554 ms   1,00     1,00      –   ispravan
+2      432 ms   1,28     1,33  0,560   ispravan
+4      363 ms   1,53     1,60  0,540   ispravan
+8      344 ms   1,61     1,78  0,567   ispravan
+16     344 ms   1,61     1,88  0,596   ispravan</pre><small>Vremena ovise o računalu; zbroj mora uvijek biti 2000000001000000000.</small></div>
+  </div>
+
+  <div class="card">
+    <h3>Zadatak 2: loša podjela posla <span class="pill">Zadatak2_Podjela.cs</span></h3>
+    <p class="muted" style="margin:6px 0">Zadano: <code>JeProst</code>, <code>BrojProstih</code> i slijedno brojanje prostih brojeva do N = 5·10<sup>6</sup>; K = 4. Provjera je li broj x prost traje dulje što je x veći. Metoda <code>Izmjeri</code> vraća najkraće od tri mjerenja.</p>
+    <b>Što trebate napraviti:</b>
+    <ol class="tight">
+      <li>Podijelite raspon [1, N] na K jednakih dijelova, svaki u svom tasku. Rezultat mora biti jednak slijednom.</li>
+      <li>Za svaki task izmjerite koliko je radio i ispišite ta vremena. Zašto se razlikuju i koliko dugo čekaju taskovi koji su prvi gotovi?</li>
+      <li>Popravite podjelu tako da svi radnici rade približno jednako dugo, a da istodobno rade najviše K niti. Ako koristite <code>Parallel.For</code>, broj niti ograničite s <code>new ParallelOptions { MaxDegreeOfParallelism = K }</code>. Usporedite ukupno vrijeme s jednakim rasponima.</li>
+    </ol>
+    <div class="out"><b>Primjer ispisa: jednaki rasponi</b><pre>Prosti brojevi do 5000000, K = 4
+Slijedno:                348513  (1528 ms)
+Jednaki rasponi, K = 4:  348513  (535 ms)
+    taskovi (ms): 241 382 466 535</pre><small>Popravljena podjela na istom računalu: oko 420 ms. Rezultat mora biti 348513.</small></div>
+  </div>
+
+  <div class="card">
+    <h3>Zadatak 3: premali zadaci <span class="pill">Zadatak3_Granularnost.cs</span></h3>
+    <p class="muted" style="margin:6px 0">Zadano: polje od N = 10<sup>6</sup> brojeva, funkcija <code>F</code> koja po elementu traje svega nekoliko nanosekundi, slijedna petlja i metoda <code>Izmjeri</code> (20 prolaza kroz polje, najkraće od pet mjerenja).</p>
+    <b>Što trebate napraviti:</b>
+    <ol class="tight">
+      <li>Napišite verziju s <code>Parallel.For</code> u kojoj je svaki element jedna iteracija. Izmjerite i izračunajte S.</li>
+      <li>Napišite verziju s rasponima: <code>Parallel.ForEach(Partitioner.Create(0, N), r =&gt; …)</code>. Raspon <code>r</code> pokriva indekse od <code>r.Item1</code> (uključen) do <code>r.Item2</code> (isključen); unutar njega napišite običnu petlju. Izmjerite.</li>
+      <li><code>Partitioner.Create(0, N, velicina)</code> zadaje veličinu raspona. Izmjerite za veličine 10, 100, 1000, 10 000, 100 000 i 500 000. Koja je najbolja? Zašto su premali i preveliki rasponi lošiji?</li>
+    </ol>
+    <div class="out"><b>Primjer ispisa (Release, procesor sa 6 jezgri i 12 logičkih)</b><pre>N = 1000000 elemenata, 20 prolaza, jezgri (logičkih): 12
+Slijedno:                       43,3 ms
+Parallel.For po elementu:       19,2 ms   S = 2,25
+Parallel.ForEach, rasponi:       6,7 ms   S = 6,49
+
+veličina raspona   vrijeme      S
+              10    502,1 ms   0,09
+             100     50,6 ms   0,85
+            1000     15,1 ms   2,86
+           10000      8,8 ms   4,94
+          100000      8,8 ms   4,94
+          500000     23,6 ms   1,84</pre><small>Kratka mjerenja jako variraju; usporedite redove veličine, a ne točne brojeve.</small></div>
+  </div>
+
+  <div class="card">
+    <h3>Zadatak 4: pet naredbi s predavanja <span class="pill">Zadatak4_PetNaredbi.cs</span></h3>
+    <p class="muted" style="margin:6px 0">Zadano: naredbe S1–S5 iz predavanja kao metode <code>S1_Ulaz</code>, <code>S2_P</code>, <code>S3_Q</code>, <code>S4_R</code> i <code>S5_Ispis</code> (broj u imenu je broj naredbe). Svaka traje jednu jedinicu posla (oko 0,1 s). <code>S3_QTriJedinice</code> je ista naredba S3, ali q traje tri jedinice. Slijedna verzija i metoda <code>Izmjeri</code> su zadane.</p>
+    <b>Što trebate napraviti:</b>
+    <ol class="tight">
+      <li>Napišite paralelnu verziju u kojoj se S2, S3 i S4 izvode istodobno pomoću <code>Parallel.Invoke</code>. Rezultat mora biti jednak slijednom. Izmjerite S i usporedite s Amdahlovim zakonom uz N = 3 (istodobno rade tri naredbe).</li>
+      <li>Neka q traje tri jedinice (<code>S3_QTriJedinice</code>). Prije mjerenja zapišite što predviđa Amdahlov zakon (i dalje N = 3), a što graf ovisnosti naredbi. Izmjerite. Koje je predviđanje bliže i zašto?</li>
+      <li>Ograničite <code>Parallel.Invoke</code> na dvije niti (<code>ParallelOptions</code>, <code>MaxDegreeOfParallelism = 2</code>), kao da računalo ima samo dvije jezgre. Opet najprije predvidite, a zatim izmjerite S.</li>
+    </ol>
+    <div class="out"><b>Primjer ispisa (korak 1)</b><pre>Korak 1: p, q, r po 1 jedinicu, 3 niti
+  slijedno 555 ms, paralelno 345 ms, S = 1,61 (Amdahl: 1,67)</pre><small>Za korake 2 i 3 primjer ispisa namjerno nije dan: najprije zapišite svoje predviđanje.</small></div>
+  </div>
+
+  <h2>Predaja</h2>
+  <p>Vježba se evidentira prisustvom (najmanje 70 % termina vježbi). Ocjenjuju se dvije domaće zadaće, o kojima će biti riječi kasnije.</p>
+  <footer>Interaktivni prikazi uz ovu vježbu: <a href="../Vizualizacije/tri_zakona.html">tri_zakona.html</a> (gradivo predavanja 3 korak po korak, mapa »Vizualizacije« tjedna 3), <a href="../Vizualizacije/zakoni.html">zakoni.html</a> (Karp–Flattov kalkulator za vaša mjerenja iz zadatka 1, mapa »Vizualizacije« tjedna 3), <a href="../../Tjedan%2001%20-%20Uvod/Vizualizacije/amdahl.html">amdahl.html</a> (mapa »Vizualizacije« tjedna 1) i <a href="../../Tjedan%2002%20-%20Taskovi%20i%20zamke/Vizualizacije/tjedan2.html">tjedan2.html</a>, odjeljak 8 (mapa »Vizualizacije« tjedna 2).</footer>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Ako imate samo Visual Studio 2022, promijenite u net8.0 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Bez višerazinskog prevođenja: svaka metoda se odmah prevodi optimizirano. Inače ista metoda u
+         prvim pozivima radi sporije nego kasnije, pa mjerenja s malo poziva (npr. k = 1) ispadnu prespora. -->
+    <TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+
+</Project>

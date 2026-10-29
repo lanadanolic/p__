@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Vježba 3: zadatak 1 (Debug)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-debug",
+      "program": "${workspaceFolder}/Zadatak1_Amdahl/bin/Debug/net10.0/Zadatak1_Amdahl.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak1_Amdahl",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 1 (Release)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-release",
+      "program": "${workspaceFolder}/Zadatak1_Amdahl/bin/Release/net10.0/Zadatak1_Amdahl.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak1_Amdahl",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 2 (Debug)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-debug",
+      "program": "${workspaceFolder}/Zadatak2_Podjela/bin/Debug/net10.0/Zadatak2_Podjela.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak2_Podjela",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 2 (Release)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-release",
+      "program": "${workspaceFolder}/Zadatak2_Podjela/bin/Release/net10.0/Zadatak2_Podjela.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak2_Podjela",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 3 (Debug)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-debug",
+      "program": "${workspaceFolder}/Zadatak3_Granularnost/bin/Debug/net10.0/Zadatak3_Granularnost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak3_Granularnost",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 3 (Release)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-release",
+      "program": "${workspaceFolder}/Zadatak3_Granularnost/bin/Release/net10.0/Zadatak3_Granularnost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak3_Granularnost",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 4 (Debug)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-debug",
+      "program": "${workspaceFolder}/Zadatak4_PetNaredbi/bin/Debug/net10.0/Zadatak4_PetNaredbi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak4_PetNaredbi",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Vježba 3: zadatak 4 (Release)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-release",
+      "program": "${workspaceFolder}/Zadatak4_PetNaredbi/bin/Release/net10.0/Zadatak4_PetNaredbi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Zadatak4_PetNaredbi",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    }
+  ]
+}
