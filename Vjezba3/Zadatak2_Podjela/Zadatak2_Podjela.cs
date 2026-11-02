@@ -35,11 +35,38 @@ static class Zadatak2_Podjela
         {
             var sat = Stopwatch.StartNew();
             r = posao();
+
+            sat.Stop();
+
             najkrace = Math.Min(najkrace, sat.ElapsedMilliseconds);
         }
         return (r, najkrace);
     }
 
+
+    //podjela na K jednakih dijelova
+    //za paralelno brojanje prostih brojeva
+    //umj da 1 nit provjerava sve brojeve od 1 do N posao se dijeli na k Taskova
+    //svaki task dobiva svoj raspon brojeva, broji koliko je u njemu prostih brojeva i koliko mu je vremena trebalo
+    static int JednakiRaspon()
+    {
+        Task<int>[] zadaci = new Task<int>[K]; //polje taskova
+        long[] vremena = new long[K]; //kreiramo polje u koje cemo spremiti vrijeme izvrsavanja
+
+        int velicina = N / K;  //izracun velicine raspona
+
+        //kreiranje taskova
+        for (int i = 0; i < K; i++)
+        {
+            int od = i * velicina + 1;
+            int doBroja;
+
+            if (i==K-1)
+            {
+                doBroja = N;
+            }
+        }
+    }
     static void Main()
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;

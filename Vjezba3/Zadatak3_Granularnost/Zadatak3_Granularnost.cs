@@ -32,12 +32,14 @@ static class Zadatak3_Granularnost
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
         var a = new double[N];
-        for (int i = 0; i < N; i++) a[i] = i;
+        for (int i = 0; i < N; i++) 
+            a[i] = i;
         Console.WriteLine($"N = {N} elemenata, {PROLAZA} prolaza, jezgri (logičkih): {Environment.ProcessorCount}");
 
         double slijedno = Izmjeri(() =>
         {
-            for (int i = 0; i < N; i++) a[i] = F(a[i]);
+            for (int i = 0; i < N; i++) 
+                a[i] = F(a[i]);
         });
         Console.WriteLine($"Slijedno:                    {slijedno,7:F1} ms");
     }
